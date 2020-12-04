@@ -1,0 +1,13 @@
+{{#partial "content"}}
+    <h1>Albums List</h1>
+
+    <ul>
+        {{#each albums}}
+            <li><b>Title:</b> {{title}} <b>Composer:</b> {{composer}} <b>Orchestra:</b> {{orchestra}} <b>Director:</b> {{director}} <b>Main Performer:</b> {{mainPerformer}} <b>Year Performed:</b> {{year}} {{liveStudio}} {{quality}}</li>
+        {{/each}}
+    </ul>
+
+    <p><a href="/music-library">Back to Main Page</a></p>
+{{/partial}}
+
+{{> base.hbs}}

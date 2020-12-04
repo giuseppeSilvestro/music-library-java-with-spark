@@ -1,0 +1,10 @@
+{{#partial "title"}}Be inspired!{{/partial}}
+
+{{#partial "content"}}
+    <h1>{{username}} today we suggest you listen to this album!</h1>
+    <p><b>Title:</b> {{album.title}} <b>Composer:</b> {{album.composer}} <b>Orchestra:</b> {{album.orchestra}} <b>Director:</b> {{album.director}} <b>Main Performer:</b> {{album.mainPerformer}} <b>Year Performed:</b> {{album.year}} {{album.liveStudio}} {{album.quality}}</p>
+
+    <p><a href="/music-library">Back to Main Page</a></p>
+{{/partial}}
+
+{{> base.hbs}}

@@ -1,20 +1,11 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Welcome to my music library</title>
-</head>
-<body>
+{{#partial "content"}}
     <h1>Welcome to my music library!</h1>
         <p>To access the library, please digit your username and email address</p>
-    <form action="/main" method="post">
+    <form action="/music-library" method="post">
         <input type="text" placeholder="What is your username?" name="username">
         <input type="text" placeholder="What is your email address?" name="email">
         <button>Sign in</button>
     </form>
+{{/partial}}
 
-</body>
-</html>
+{{>base.hbs}}

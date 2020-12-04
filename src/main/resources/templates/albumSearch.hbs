@@ -1,0 +1,32 @@
+{{#partial "title"}}Look for an album{{/partial}}
+
+{{#partial "content"}}
+
+        <h1>{{username}} fill up the form.</h1>
+
+        <form action="/albumSearch" method="post">
+            <input type="text" placeholder="Album title: " name="title">
+            <input type="text" placeholder="Composer: " name="composer">
+            <input type="text" placeholder="Orchestra: " name="orchestra">
+            <input type="text" placeholder="Director: " name="director">
+            <input type="text" placeholder="Main Performer: " name="mainPerformer">
+            <input type="text" placeholder="Live or Studio: " name="liveStudio">
+            <input type="text" placeholder="Year Performed: " name="year">
+            <input type="text" placeholder="Album Quality: " name="quality">
+            <button>Search Album</button>
+        </form>
+
+        {{#if albums}}
+            <h2>Album list:</h2>
+            <ul>
+                {{#each albums}}
+                    <li><b>Title:</b> {{title}} <b>Composer:</b> {{composer}} <b>Orchestra:</b> {{orchestra}} <b>Director:</b> {{director}} <b>Main Performer:</b> {{mainPerformer}} <b>Year Performed:</b> {{year}} {{liveStudio}} {{quality}}</li>
+                {{/each}}
+            </ul>
+        {{/if}}
+
+    <p><a href="/music-library">Back to Main Page</a></p>
+
+{{/partial}}
+
+{{> base.hbs}}
