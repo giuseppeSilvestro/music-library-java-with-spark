@@ -2,15 +2,20 @@ package com.giuseppeSilvestro.musiclibrary.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 
 public class NoPersistentAlbumDAO implements AlbumDAO{
-    private List<Album> albums;
+    private List<Album> albums = new ArrayList<>();
 
     public NoPersistentAlbumDAO() {
-        albums = new ArrayList<>();
+        albums.add(new Album("Piano Concerto n.5", "Beethoven", "London", "Rattle", "Giuseppe", "Live"
+                ,"1985", "DSD256"));
+        albums.add(new Album("Piano Concerto n.5", "Beethoven L.W.", "Berlin", "VonKarajan", "Gennaro", "Live", "1985", "DSD256"));
+        albums.add(new Album("Violin Concerto n.6", "Beethoven", "San Carlo", "Verdi", "Rachmaninov", "Studio", "1889", "FLAC"));
+        albums.add(new Album("Piano Concerto n.1", "Rachmaninov", "Moscow", "Maviv", "Rachmaninov", "Live", "1923", "WAVE"));
     }
 
     @Override
@@ -35,8 +40,10 @@ public class NoPersistentAlbumDAO implements AlbumDAO{
         List<Album> result = new ArrayList<>();
         for (Album album :
                 albums) {
-            if (album.getTitle().contains(title) && album.getComposer().contains(composer) && album.getDirector().contains(director) && album.getOrchestra().contains(orchestra)
-            && album.getMainPerformer().contains(mainPerformer) && album.getLiveStudio().contains(liveStudio) && album.getYear().contains(year) && album.getQuality().contains(quality)) {
+            if (album.getTitle().toLowerCase(Locale.ROOT).contains(title.toLowerCase(Locale.ROOT)) && album.getComposer().toLowerCase(Locale.ROOT).contains(composer.toLowerCase(Locale.ROOT))
+                    && album.getDirector().toLowerCase(Locale.ROOT).contains(director.toLowerCase(Locale.ROOT)) && album.getOrchestra().toLowerCase(Locale.ROOT).contains(orchestra.toLowerCase(Locale.ROOT))
+                    && album.getMainPerformer().toLowerCase(Locale.ROOT).contains(mainPerformer.toLowerCase(Locale.ROOT)) && album.getLiveStudio().toLowerCase(Locale.ROOT).contains(liveStudio.toLowerCase(Locale.ROOT))
+                    && album.getYear().contains(year) && album.getQuality().toLowerCase(Locale.ROOT).contains(quality.toLowerCase(Locale.ROOT))) {
                 result.add(album);
             }
         }

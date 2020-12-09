@@ -1,6 +1,8 @@
 package com.giuseppeSilvestro.musiclibrary.model;
 
-public class Album {
+import java.io.Serializable;
+
+public class Album implements Serializable {
     private String title;
     private String composer;
     private String orchestra;

@@ -4,6 +4,7 @@ import com.giuseppeSilvestro.musiclibrary.model.Album;
 import com.giuseppeSilvestro.musiclibrary.model.AlbumDAO;
 import com.giuseppeSilvestro.musiclibrary.model.NoPersistentAlbumDAO;
 import spark.ModelAndView;
+import spark.Request;
 import spark.template.handlebars.HandlebarsTemplateEngine;
 
 import java.util.HashMap;
@@ -11,20 +12,13 @@ import java.util.Map;
 
 import static spark.Spark.*;
 
-
-//TODO: add flash messages to all methods
-
 public class Main {
+    private static final String FLASH_MESSAGE_KEY = "flash_message";
+
     public static void main(String[] args) {
         staticFileLocation("/public");
 
         AlbumDAO albumDAO = new NoPersistentAlbumDAO();
-
-        albumDAO.add(new Album("Piano Concerto n.5", "Beethoven", "London", "Rattle", "Giuseppe", "Live"
-        ,"1985", "DSD256"));
-        albumDAO.add(new Album("Piano Concerto n.5", "Beethoven L.W.", "Berlin", "VonKarajan", "Gennaro", "Live", "1985", "DSD256"));
-        albumDAO.add(new Album("Violin Concerto n.6", "Beethoven", "San Carlo", "Verdi", "Rachmaninov", "Studio", "1889", "FLAC"));
-        albumDAO.add(new Album("Piano Concerto n.1", "Rachmaninov", "Moscow", "Maviv", "Rachmaninov", "Live", "1923", "WAVE"));
 
         before((request, response) -> {
             if (request.cookie("username") != null) {
@@ -32,16 +26,33 @@ public class Main {
             }
         });
 
-        get("/", (request, response) -> new ModelAndView(null, "index.hbs"), new HandlebarsTemplateEngine());
+        before("/music-library", (request, response) -> {
+            if (request.attribute("username") == null) {
+                response.redirect("/");
+                halt();
+            }
+        });
 
-        post("/music-library", (request, response) -> {
+        get("/", (request, response) -> {
             Map<String, String> model = new HashMap<>();
-            final String username = request.queryParams("username");
-            final String email = request.queryParams("email");
-            response.cookie("username", username);
-            response.cookie("email", email);
-            model.put("username", username);
-            return new ModelAndView(model, "music-library.hbs");
+            model.put("flashMessage", captureFlashMessage(request));
+            return new ModelAndView(model, "index.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        post("/index", (request, response) -> {
+            Map<String, String> model = new HashMap<>();
+            String username = request.queryParams("username");
+            String email = request.queryParams("email");
+            if (isEmpty(username, email)){
+                setFlashMessage(request,"Please insert your username and email address");
+                response.redirect("/");
+            } else {
+                response.cookie("username", username);
+                response.cookie("email", email);
+                model.put("username", username);
+            }
+            response.redirect("/music-library");
+            return null;
         }, new HandlebarsTemplateEngine());
 
         get("/albumList", (request, response) -> {
@@ -53,6 +64,7 @@ public class Main {
         get("/music-library", (request, response) -> {
             Map<String, String> model = new HashMap<>();
             model.put("username", request.attribute("username"));
+            model.put("flashMessage", captureFlashMessage(request));
             return new ModelAndView(model, "music-library.hbs");
         }, new HandlebarsTemplateEngine());
 
@@ -66,11 +78,11 @@ public class Main {
         get("/addAlbum", (request, response) -> {
             Map<String, String> model = new HashMap<>();
             model.put("username", request.attribute("username"));
+            model.put("flashMessage", captureFlashMessage(request));
             return new ModelAndView(model, "addAlbum.hbs");
         }, new HandlebarsTemplateEngine());
 
         post("/addAlbum", (request, response) -> {
-            //TODO: add a function to check if the fields are empty
             String title = request.queryParams("title");
             String composer = request.queryParams("composer");
             String orchestra = request.queryParams("orchestra");
@@ -79,8 +91,12 @@ public class Main {
             String liveStudio = request.queryParams("liveStudio");
             String year = request.queryParams("year");
             String quality = request.queryParams("quality");
+            if (isEmpty(title, composer, orchestra, director, quality)){
+                setFlashMessage(request, "Some fields are empty. Please fill the form correctly.");
+            } else {
             Album album = new Album(title, composer, orchestra, director, mainPerformer, liveStudio, year, quality);
             albumDAO.add(album);
+            }
             response.redirect("/addAlbum");
             return null;
         });
@@ -105,6 +121,36 @@ public class Main {
             model.put("username", request.attribute("username"));
             return new ModelAndView(model, "albumSearch.hbs");
         }, new HandlebarsTemplateEngine());
+    }
 
+    private static void setFlashMessage(Request request, String message) {
+        request.session().attribute(FLASH_MESSAGE_KEY, message);
+    }
+
+    private static String getFlashMessage(Request request) {
+        if (request.session(false) == null) {
+            return null;
+        }
+        if (!request.session().attributes().contains(FLASH_MESSAGE_KEY)) {
+            return null;
+        }
+        return (String) request.session().attribute(FLASH_MESSAGE_KEY);
+    }
+    public static String captureFlashMessage(Request request) {
+        String message = getFlashMessage(request);
+        if (message != null) {
+            request.session().removeAttribute(FLASH_MESSAGE_KEY);
+        }
+        return message;
+    }
+
+    private static boolean isEmpty (String ...a) {
+        for (String parameter :
+                a) {
+            if (parameter.isBlank()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
