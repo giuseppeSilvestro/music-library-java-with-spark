@@ -1,9 +1,10 @@
 package com.giuseppeSilvestro.musiclibrary.model;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public interface AlbumDAO {
-    boolean add(Album album);
+    void add(Album album);
 
     List<Album> findAll();
     Album randomAlbum();

@@ -19,8 +19,8 @@ public class NoPersistentAlbumDAO implements AlbumDAO{
     }
 
     @Override
-    public boolean add(Album album) {
-        return albums.add(album);
+    public void add(Album album) {
+        albums.add(album);
     }
 
     @Override

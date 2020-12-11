@@ -2,6 +2,7 @@ package com.giuseppeSilvestro.musiclibrary;
 
 import com.giuseppeSilvestro.musiclibrary.model.Album;
 import com.giuseppeSilvestro.musiclibrary.model.AlbumDAO;
+import com.giuseppeSilvestro.musiclibrary.model.JDBCAlbumDAO;
 import com.giuseppeSilvestro.musiclibrary.model.NoPersistentAlbumDAO;
 import spark.ModelAndView;
 import spark.Request;
@@ -15,10 +16,10 @@ import static spark.Spark.*;
 public class Main {
     private static final String FLASH_MESSAGE_KEY = "flash_message";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
         staticFileLocation("/public");
 
-        AlbumDAO albumDAO = new NoPersistentAlbumDAO();
+        AlbumDAO albumDAO = new JDBCAlbumDAO();
 
         before((request, response) -> {
             if (request.cookie("username") != null) {
