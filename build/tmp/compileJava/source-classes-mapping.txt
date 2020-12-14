@@ -1,10 +1,13 @@
-com/giuseppeSilvestro/musiclibrary/model/Album.java
- com.giuseppeSilvestro.musiclibrary.model.Album
 com/giuseppeSilvestro/musiclibrary/model/NoPersistentAlbumDAO.java
  com.giuseppeSilvestro.musiclibrary.model.NoPersistentAlbumDAO
-com/giuseppeSilvestro/musiclibrary/model/AlbumDAO.java
- com.giuseppeSilvestro.musiclibrary.model.AlbumDAO
+com/giuseppeSilvestro/musiclibrary/model/HibernateAlbumDAO.java
+ com.giuseppeSilvestro.musiclibrary.model.HibernateAlbumDAO
 com/giuseppeSilvestro/musiclibrary/Main.java
  com.giuseppeSilvestro.musiclibrary.Main
+com/giuseppeSilvestro/musiclibrary/model/Album.java
+ com.giuseppeSilvestro.musiclibrary.model.Album
+ com.giuseppeSilvestro.musiclibrary.model.Album$AlbumBuilder
+com/giuseppeSilvestro/musiclibrary/model/AlbumDAO.java
+ com.giuseppeSilvestro.musiclibrary.model.AlbumDAO
 com/giuseppeSilvestro/musiclibrary/model/JDBCAlbumDAO.java
  com.giuseppeSilvestro.musiclibrary.model.JDBCAlbumDAO

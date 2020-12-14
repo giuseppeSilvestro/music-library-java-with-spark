@@ -1,9 +1,10 @@
 package com.giuseppeSilvestro.musiclibrary;
 
-import com.giuseppeSilvestro.musiclibrary.model.Album;
-import com.giuseppeSilvestro.musiclibrary.model.AlbumDAO;
-import com.giuseppeSilvestro.musiclibrary.model.JDBCAlbumDAO;
-import com.giuseppeSilvestro.musiclibrary.model.NoPersistentAlbumDAO;
+import com.giuseppeSilvestro.musiclibrary.model.*;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.service.ServiceRegistry;
 import spark.ModelAndView;
 import spark.Request;
 import spark.template.handlebars.HandlebarsTemplateEngine;
@@ -19,7 +20,7 @@ public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
         staticFileLocation("/public");
 
-        AlbumDAO albumDAO = new JDBCAlbumDAO();
+        AlbumDAO albumDAO = new HibernateAlbumDAO();
 
         before((request, response) -> {
             if (request.cookie("username") != null) {
